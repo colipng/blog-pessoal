@@ -1,0 +1,831 @@
+/* Efeito de deslizar ao clicar nos links do menu */
+html {
+    scroll-behavior: smooth;
+}
+/* 1. Definindo o estilo base para o corpo da página */
+    body {
+        background-color: #2a0810; 
+        color: #f3e8eb;            
+        font-family: sans-serif;   
+        padding: 20px;             
+    }
+
+/* 2. Estrutura da Seção dos Cards */
+    .secao-cards {
+        display: flex;             /* Ativa o modo Flexbox */
+        gap: 30px;                 /* Espaço entre um card e outro */
+        justify-content: center;   /* Centraliza os cards no meio da tela */
+        flex-wrap: wrap;           /* Permite que o 2º card desça no celular */
+        margin-top: 40px;          /* Espaço entre o texto de cima e os cards */
+    }
+
+/* 3. Estilo da caixa do Card */
+    .card {
+        background-color: #3d0e1c; /* Tom de bordô aveludado */
+        border: 1px solid #5c182a; /* Borda sutil do card */
+        border-radius: 16px;       /* Cantos arredondados do card */
+        padding: 24px;             /* Espaço interno pro texto não encostar nas bordas */
+        width: 100%;
+        max-width: 360px;          /* Largura máxima */
+    }
+
+/* 4. Tamanho da foto */
+    .card-img {
+        width: 100%;               /* A foto preenche a largura do card */
+        height: 300px;             /* Altura fixa */
+        object-fit: cover;         /* Corta o excesso da foto sem esticar */
+        border-radius: 8px;        /* Bordas arredondadas na foto */ 
+    }
+
+/* 5. Posicionador do container da foto (Nome corrigido: imagem) */
+    .card-imagem-container {
+        position: relative;        /* Cria a referência para as setas flutuarem aqui dentro */
+        border-radius: 12px;
+        overflow: hidden;          /* Faz a foto respeitar o border-radius */
+        margin-top: 15px;
+    }
+
+/* 6. Controle dos slides */
+    .slide {
+        display: none;             /* Esconde todos os slides por padrão */
+    }
+
+    .slide.active {
+        display: block;            /* Mostra apenas o slide ativo */
+    }
+
+/* 7. Estilo da Legenda dos gatos */
+    .legenda {
+        background: rgba(42, 8, 16, 0.85); /* Fundo bordô semitransparente */
+        color: #f3e8eb;
+        text-align: center;
+        padding: 6px;
+        font-size: 0.85rem;
+        font-style: italic;     
+    }
+
+/* 8. Estilo das setas flutuantes */
+    .btn-seta {
+        position: absolute;        /* Faz o botão flutuar sobre a foto */
+        top: 50%;                  /* Centraliza na metade da altura da foto */
+        transform: translateY(-50%);
+        background-color: rgba(42, 8, 16, 0.85); /* Fundo do círculo */
+        color: #e11d48;            /* Cor vermelha rubi */
+        border: 1px solid #e11d48;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;        /* Faz o botão ficar redondo */
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;           /* Muda o cursor para indicar que é clicável */
+        z-index: 10;                /* Garante que a seta fique acima da foto */
+        transition: all 0.2s ease;
+    }
+
+/* Efeito ao passar o mouse na seta */
+    .btn-seta:hover {
+        background-color: #e11d48; 
+        color: #ffffff;            /* A seta fica branca e o fundo vermelho ao passar o mouse */
+        transform: translateY(-50%) scale(1.1);
+    }
+
+/* Posiciona uma seta na esquerda e a outra na direita (Ponto adicionado no seta-esquerda) */
+    .seta-esquerda {
+        left: 10px;
+    }
+
+    .seta-direita {
+        right: 10px;
+    }
+/* Caixa de Citação em Destaque */
+    .caixa-destaque {
+        background-color: #3d0e1c; /* Fundo bordô aveludado da caixa */
+        border-left: 4px solid #e11d48; /* A barrinha vertical vermelha/rubi na esquerda */
+        padding: 18px 24px; /* Espaço Interno para o texto respirar */
+        border-radius: 0 8px 8px 0; /* Arredonda os cantos APENAS do lado direito */
+        margin: 35px 0; /* Espaçamento em cima e embaixo da caixa */
+    }
+
+    .caixa-destaque p {
+        font-style: italic; /* Deixa o texto em itálico */
+        color: #cbd5e1; /* Cor de texto clara */
+        font-size: 1rem; /* Tamanho da fonte */
+        line-height: 1.6; /* Espaçamento entre linhas */
+    }
+
+    .caixa-destaque cite {
+        display: block;
+        margin-top: 10px; /* Espaço entre o texto e o autor */
+        font-size: 0.9rem; /* Tamanho da fonte do autor */
+        color: #94e3b8; /* Cor vermelha/rubi */
+        font-style: normal; /* Tira o itálico do autor */
+    }
+    .foto-perfil {
+        width: 200px;
+        height: 200px;
+        object-fit: cover; /* Enquadra o rosto na foto */
+
+        /* 1. Deixa em formato Quadraddo com cantos arredondados */
+        border-radius: 16px;
+        
+        /* 2. A linha da borda sólida */
+        border: 3px solid #e11d48; /* Vermelho Rubi */
+
+        /* 3. Neon */
+        box-shadow: 0 0 15px rgba(225, 29, 72, 0.6),
+                    0 0 35px rgba(225, 29, 72, 0.3);
+
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Passar o mouse sobre a foto de perfil aumenta o brilho */
+    .foto-perfil:hover {
+        transform: scale(1.03); /* Leve zoom suave */
+        box-shadow: 0 0 25px rgba(225, 29, 72, 0.9)
+                    0 0 50px rgba(225, 29, 72, 0.5)
+    }
+    /* 9. Centralizando todo o bloco do cabeçalho */
+    header {
+        display: flex;
+        flex-direction: column; /*Empilha os elementos */
+        align-items: center;
+        margin-bottom: 40px;
+        margin-top: 10px;
+    }
+
+    header h1 {
+        font-size: 2.2rem;
+        color: #f3e8eb;
+        margin-bottom: 15px;
+    }
+
+    /* 10. Foto de perfil com margem ajustada */
+    .foto-perfil {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 16px;
+        border: 3px solid #e11d48;
+        box-shadow: 0 0 15px rgba(225, 29, 72, 0.6),
+                    0 0 33px rgba(225, 29, 72, 0.3);
+        margin-bottom: 25px; /* Espaço entre a foto e o menu */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .foto-perfil:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0 25px rgba(225, 29, 72, 0.9),
+                    0 0 50px rgba(225, 29, 72, 0.5);
+    }
+
+    /* 11. Removendo os indicadores */
+    nav ol, nav ul {
+        display: flex; /* Coloca os links */
+        gap: 25px; /* Espaço entre os links */
+        list-style: none; /* remove os indicadores preto/azul da lista */
+        padding: 0;
+        margin: 0;
+    }
+
+    nav a {
+        color: #3734ff; /* Tom cinza claro suave */
+        text-decoration: none; /* Tira o risco de sublinhado */
+        font-weight: bold; /* Deixa o texto em negrito */
+        font-size: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    /* Efeito ao passar o mouse sobre os links */
+    nav a:hover {
+        color: #7dd3fc; /* Fica vermelho ao passar o mouse */
+        text-decoration: underline; /* Aparece o sublinhado ao passar o mouse */
+    }
+    
+    /* Botão helloworld.html */
+    .btn-helloworld {
+        background-color: #3d0e1c;
+        color: #38bdf8;
+        border: 1px solid #38bdf8;
+        padding: 3px 10px;
+        border-radius: 6px;
+        font-family: monospace;
+        font-size: 0.9rem;
+        font-weight: bold;
+        cursor: pointer;
+        display: inline-block;
+        transition: all 0.2s ease;
+    }
+
+    .btn-helloworld:hover {
+        background-color: #38bdf8;
+        color: #0f172a;
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+
+    /* Balão Flutuante (Toast Notification) */
+    #toast-status {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: #1e293b;
+        color: #f3e8eb;
+        border-left: 4px solid #38bdf8;
+        padding: 14px 20px;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+        font-size: 0.95rem;
+        z-index: 9999;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .toast-escondido {
+        opacity: 0 !important;
+        transform: translateY(20px) !important;
+        pointer-events: none !important;
+    }
+
+    .toast-visivel {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        pointer-events: auto !important;
+    }
+    
+    /* Estilo da Linha do tempo */
+    .timeline {
+        position: relative;
+        max-width: 700px;
+        margin: 30px auto;
+        padding-left: 20px;
+        border-left: 3px solid #e11d48; /* Linha vertical vermelha */
+    }
+
+    .timeline-item {
+        position: relative;
+        max-width: 100%;
+        margin: 30px 0 30px 15px; /* Alinha com a margem esquerda do texto */
+        padding-left: 20px;
+    }
+
+    /* Ponto brilhante em cada marco */
+    .timeline-dot{
+        position: absolute;
+        left: -29px;    /* Encaixa o ponto exatamente em cima da linha vertical */
+        top: 5px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: #e11d48;
+        border: 3px solid #2a0810;
+        box-shadow: 0 0 10px #e11d48; /* Efeito de brilho no ponto */
+    }
+
+    /* A Caixa de cada marco */
+    .timeline-content {
+        background-color: #3d0e1c; /*Fundo bordô */
+        border: 1px solid #5c182a;
+        padding: 18px 22px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .timeline-date {
+        font-size: 0.8rem;
+        color: #38bdf8;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .timeline-content h3 {
+        margin: 6px 0 10px 0;
+        color: #f3e8eb;
+        font-size: 1.1rem;
+    }
+
+    .timeline-content p {
+        color: #cbd5e1;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    /* Seção de Tech Stack & Habilidades */
+    #habilidades {
+        margin: 40px 0;
+    }
+
+    .subtitulo-secao {
+        color: #cbd5e1;
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+    }
+
+    .skills-grid {
+        display: flex;
+        flex-wrap: wrap;    /* Etiqueta se ajusta a tela */
+        gap: 12px;          /* Espaçamento entre pílulas */
+        margin-top: 15px;
+    }
+
+    /* As Pílulas/Etiquetas de Habilidades */
+    .skill-badge {
+        background-color: #3d0e1c;
+        color: #38bdf8;
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        padding: 8px 18px;
+        border-radius: 20px;    /* Deixa no formato pílula arredonda */
+        font-size: 0.9rem;
+        font-weight: bold;
+        cursor: default;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Efeito do Neon ao passar o mouse */
+    .skill-badge:hover {
+        background-color: #e11d48;
+        color: #ffffff;
+        border-color: #e11d48;
+        transform: translateY(-4px) scale(1.05); /* Sobe 4px e aumenta levemente */
+        box-shadow: 0 0 15px rgba(225, 29, 72, 0.7); /*Aura de brilho neon */
+    }
+
+    /* Seção de Hobbies e Paixões (Versão Interativa) */
+#hobbies {
+    margin: 50px 0;
+}
+
+.hobbies-grid {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;           /* Garante que fique lado a lado e responsivo */
+    margin-top: 25px;
+}
+
+.hobby-card {
+    background-color: #3d0e1c; /* Tom bordô aveludado */
+    border: 1px solid #5c182a;
+    border-radius: 16px;
+    padding: 24px;
+    flex: 1;
+    min-width: 280px;          /* Garante uma largura mínima bonita */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hobby-card:hover {
+    transform: translateY(-6px);
+    border-color: #e11d48;     /* Acende a borda em vermelho rubi ao passar o mouse */
+    box-shadow: 0 12px 30px rgba(225, 29, 72, 0.3);
+}
+
+.hobby-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.hobby-icon {
+    font-size: 2rem;
+}
+
+.hobby-tag {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.hobby-card h3 {
+    color: #f3e8eb;
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+}
+
+.hobby-card p {
+    color: #cbd5e1;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* Lista de Livros e Filmes Favoritos */
+.hobby-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 12px;
+}
+
+.hobby-list li {
+    color: #94a3b8;
+    font-size: 0.88rem;
+    margin-bottom: 8px;
+}
+
+.hobby-list em {
+    color: #f3e8eb;
+    font-style: normal;
+    font-weight: 600;
+}
+
+/* Chips/Tags da Corrida */
+.hobby-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 12px;
+}
+
+.hobby-chips span {
+    background: rgba(225, 29, 72, 0.15);
+    color: #e11d48;
+    border: 1px solid rgba(225, 29, 72, 0.3);
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* ====================================================
+   1. HIERARQUIA VISUAL
+   ==================================================== */
+
+/* Espaçamento grande entre cada seção */
+section {
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+/* TÍTULOS DAS SEÇÕES */
+h2 {
+    color: #38bdf8;             /* Azul elétrico que salta aos olhos */
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    border-bottom: 2px solid #5c182a; /* Linha divisória bordô sob cada título */
+    padding-bottom: 10px;
+}
+
+/* SUBTÍTULOS DAS SEÇÕES */
+.subtitulo-secao {
+    color: #cbd5e1;             /* Cinza-gelo suave */
+    font-size: 1rem;
+    margin-bottom: 30px;        /* 30px de espaço ANTES do conteúdo começar! */
+    line-height: 1.5;
+}
+
+/* TÍTULOS DOS CARDS */
+h3 {
+    color: #f3e8eb;
+    font-size: 1.2rem;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+/* PARÁGRAFOS DE TEXTO */
+p {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    line-height: 1.7;           /* Espaço relaxante entre linhas de texto */
+    margin-bottom: 15px;
+}
+
+/* LINHAS DIVISÓRIAS DA PÁGINA */
+hr {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e11d48, transparent);
+    margin: 60px 0;
+}
+
+/* ====================================================
+   2. ESTRUTURA DOS CARDS DE HOBBIES
+   ==================================================== */
+.hobbies-grid {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.hobby-card {
+    background-color: #3d0e1c;   /* Fundo bordô aveludado da caixa */
+    border: 1px solid #5c182a;
+    border-radius: 16px;
+    padding: 24px;
+    flex: 1;
+    min-width: 280px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.hobby-card:hover {
+    transform: translateY(-6px);
+    border-color: #e11d48;
+}
+
+.hobby-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.hobby-icon {
+    font-size: 2rem;
+}
+
+.hobby-tag {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.hobby-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 12px;
+}
+
+.hobby-list li {
+    color: #94a3b8;
+    font-size: 0.88rem;
+    margin-bottom: 8px;
+}
+
+.hobby-list em {
+    color: #f3e8eb;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.hobby-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 12px;
+}
+
+.hobby-chips span {
+    background: rgba(225, 29, 72, 0.15);
+    color: #e11d48;
+    border: 1px solid rgba(225, 29, 72, 0.3);
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* ====================================================
+   RODAPÉ E BARRA DE CONTATO
+   ==================================================== */
+.rodape-contato {
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid #5c182a; /* Linha de divisão sutil bordô */
+}
+
+.rodape-conteudo {
+    background-color: #3d0e1c;   /* Fundo bordô aveludado */
+    border: 1px solid #5c182a;
+    border-radius: 16px;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.rodape-info h3 {
+    color: #f3e8eb;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+}
+
+.rodape-info p {
+    color: #cbd5e1;
+    font-size: 0.92rem;
+    max-width: 450px;
+    margin: 0;
+}
+
+.social-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Botões Individuais de Redes Sociais */
+.btn-social {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #2a0810;
+    color: #f3e8eb;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Efeito ao passar o mouse no GitHub (Brilho Azul/Cinza) */
+.btn-social.github:hover {
+    background-color: #24292e;
+    border-color: #38bdf8;
+    color: #38bdf8;
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+}
+
+/* Efeito ao passar o mouse no LinkedIn (Brilho Azul LinkedIn) */
+.btn-social.linkedin:hover {
+    background-color: #0a66c2;
+    border-color: #0a66c2;
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px rgba(10, 102, 194, 0.5);
+}
+
+/* Efeito ao passar o mouse no E-mail (Brilho Vermelho) */
+.btn-social.email:hover {
+    background-color: #e11d48;
+    border-color: #e11d48;
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px rgba(225, 29, 72, 0.5);
+}
+
+.social-icon {
+    font-size: 1.1rem;
+}
+
+.rodape-copy {
+    text-align: center;
+    margin-top: 30px;
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+/* ====================================================
+   SEÇÃO DE PROJETOS EM DESTAQUE
+   ==================================================== */
+#projetos {
+    margin-bottom: 60px;
+}
+
+.projeto-card {
+    background-color: #3d0e1c;   /* Fundo bordô aveludado */
+    border: 1px solid #5c182a;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.projeto-card:hover {
+    transform: translateY(-4px);
+    border-color: #e11d48;
+}
+
+.projeto-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.projeto-tag {
+    background: rgba(225, 29, 72, 0.2);
+    color: #e11d48;
+    border: 1px solid rgba(225, 29, 72, 0.4);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.projeto-tag.dev {
+    background: rgba(56, 189, 248, 0.2);
+    color: #38bdf8;
+    border-color: rgba(56, 189, 248, 0.4);
+}
+
+.projeto-techs {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.projeto-titulo {
+    color: #f3e8eb;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+}
+
+.projeto-descricao {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Caixa de Tech Insight (Explicação Técnica do Código) */
+.tech-insight-box {
+    background-color: rgba(15, 23, 42, 0.6);
+    border-left: 4px solid #38bdf8;
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+}
+
+.tech-insight-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.tech-insight-icon {
+    font-size: 1.1rem;
+}
+
+.tech-insight-title {
+    color: #38bdf8;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.tech-insight-text {
+    color: #94a3b8;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Botões dos Projetos */
+.projeto-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.btn-projeto-link {
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btn-projeto-link.primary {
+    background-color: #e11d48;
+    color: #ffffff;
+    border: 1px solid #e11d48;
+}
+
+.btn-projeto-link.primary:hover {
+    background-color: #be123c;
+    box-shadow: 0 0 15px rgba(225, 29, 72, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-projeto-link.outline {
+    background-color: transparent;
+    color: #38bdf8;
+    border: 1px solid #38bdf8;
+}
+
+.btn-projeto-link.outline:hover {
+    background-color: rgba(56, 189, 248, 0.15);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+    transform: translateY(-2px);
+}

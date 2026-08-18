@@ -4,7 +4,7 @@
 
 Aplicação web desenvolvida do zero para documentar e registrar a minha transição de carreira para a área de Tecnologia da Informação (Análise e Desenvolvimento de Sistemas — ENIAC).
 
-🌐 **Acesse o site ao vivo:** [Clique aqui para visualizar o site](https://colipng.github.io/)
+🌐 **Acesse o site ao vivo:** [Clique aqui para visualizar o site](https://colipng.github.io/blog-pessoal/)
 
 ---
 

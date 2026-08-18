@@ -2,7 +2,11 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Celulares -->
     <title>César Ribeiro</title>
+
+    <!-- Ícone de Foguete na Aba do Navegador -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
     <link rel="stylesheet" href="style.css">
 </head>    
 <body>
@@ -225,14 +229,28 @@
                 <button class="btn-seta seta-esquerda" onclick="mudarfoto(this, -1)">&lt;</button>
 
                 <div class="carrossel">
+                    <!-- Slide 1 -->
                     <div class="slide active">
-                        <img src="fotos/gato1.jpeg" alt="Gato Luke" class="card-img">
+                        <img src="fotos/gato1.jpg" alt="Gato Luke" class="card-img">
                         <figcaption class="legenda">Esse é o meu gato Luke</figcaption>
                     </div>
 
+                    <!-- Slide 2 -->
                     <div class="slide">
-                        <img src="fotos/gato2.jpeg" alt="Gatos Artemis e Booh" class="card-img">
+                        <img src="fotos/gato4.jpeg" alt="Gatos Artemis e Booh" class="card-img">
                         <figcaption class="legenda">Esses são a Artemis e o Booh</figcaption>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="slide">
+                        <img src="fotos/gato3.jpeg" alt="Gatos Luke e Booh" class="card-img">
+                        <figcaption class="legenda">Esses são o Luke e o Booh</figcaption>
+                    </div>
+
+                    <!-- Slide 4 -->
+                    <div class="slide">
+                        <img src="fotos/gato2.jpeg" alt="Gato Booh" class="card-img">
+                        <figcaption class="legenda">Esse é o Booh</figcaption>
                     </div>
                 </div>
 
@@ -245,10 +263,26 @@
             <p class="card-texto">
                 Minha segunda família, super importante e presente em todos os momentos da minha vida.
             </p>
+
             <div class="card-imagem-container">
-                <button class="btn-seta seta-esquerda" aria-label="Anterior">&lt;</button>
-                <img src="fotos/amigos.jpg" alt="Fotos dos meus amigos" class="card-img">
-                <button class="btn-seta seta-direita" aria-label="Próximo">&gt;</button>
+                <!-- Seta Esquerda (com a função onclick!) -->
+                <button class="btn-seta seta-esquerda" onclick="mudarfoto(this, -1)">&lt;</button>
+
+                <!-- Grupo do Carrossel -->
+                <div class="carrossel">
+                    <!-- Foto 1 -->
+                    <div class="slide active">
+                        <img src="fotos/amigo1.jpg" alt="Fotos dos meus amigos" class="card-img">
+                    </div>
+
+                    <!-- Foto 2 -->
+                    <div class="slide">
+                        <img src="fotos/amigo2.jpg" alt="Fotos dos meus amigos" class="card-img">
+                    </div>
+                </div>
+
+                <!-- Seta Direita (com a função onclick!) -->
+                <button class="btn-seta seta-direita" onclick="mudarfoto(this, 1)">&gt;</button>
             </div>
         </article>
     </section>
